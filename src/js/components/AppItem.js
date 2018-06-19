@@ -47,7 +47,10 @@ class AppItem extends Component<Props>{
                         height:imageHeight,
                         }
                     }
-                    source={{uri: this.props.entry.get(`im:image`)[0].label}}
+                    source={{
+                        uri: this.props.entry.get(`im:image`)[0].label,
+                        cache: 'default'
+                    }}
                 />
                <Text style={styles.label}>{this.props.entry.get(`im:name`).label}</Text>     
                <Text style={styles.label}>{this.props.entry.get(`category`).attributes.label}</Text>     
@@ -77,7 +80,10 @@ class AppItem extends Component<Props>{
                 <Image
                     borderRadius={parseInt(this.props.indexText) % 2 == 0 ? 50 : 20}
                     style={{ width:imageWidth, height:imageHeight}}
-                    source={{uri: this.props.entry.get(`im:image`)[0].label}}
+                    source={{
+                        uri: this.props.entry.get(`im:image`)[0].label,
+                        cache: 'default'
+                    }}
                 />
                 <View style={styles.appDetailView}>
                     <Text style={styles.label}>{this.props.entry.get(`im:name`).label}</Text>     
