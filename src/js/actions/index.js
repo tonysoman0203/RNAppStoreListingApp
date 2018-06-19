@@ -22,13 +22,11 @@ export const getAppRecommendation = () => {
             dispatch(getAppRecommendationSuccess(appRecom))
             callGetTopFreeAppApi()
             .then(res => {
-                console.log(`callAPI = ${JSON.stringify(res)}`);
                 dispatch(getTopFreeAppSuccess(res))
                 genEntriesId(res)
                 .then(ids => {
                     getAppRatingInfoAPI(ids)
                     .then(appRating =>{
-                        console.log(`resolve appRating = ${JSON.stringify(appRating.length)}`);
                         dispatch(getAppRatingInfoAPISuccess(appRating))
                         dispatch(toggleLoading())
                     })

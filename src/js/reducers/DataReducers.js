@@ -1,7 +1,6 @@
-import * as Models from '../constants/models'
 import Actions from '../constants/action-types'
 import moment from 'moment'
-import Utils from '../utils/index';
+import Utils from '../utils/index'
 
 const DataReducers = (state = {} ,action) =>{
     switch(action.type){
