@@ -1,8 +1,16 @@
 import axios from 'axios';
+import { setupCache } from 'axios-cache-adapter'
 import promise from 'promise';
 
 // Add a request interceptor 
-var axiosInstance = axios.create({timeout: 5000});
+const cache = setupCache({
+  maxAge: 15 * 60 * 1000
+})
+
+var axiosInstance = axios.create({
+  timeout: 5000,
+  adapter: cache.adapter
+});
 
 axiosInstance.interceptors.request.use(function (config) {
   // Do something before request is sent 
