@@ -101,9 +101,13 @@ class App extends Component<Props> {
   }
 
   onSearchBarInputed = (text) => {
-    console.log(`onSearchBarInputed text = ${text}`);
-    this.setState({searchText: text})
-    this.props.doAppSearch(text)
+    if(this.props.state.UIReducers.get(`isLoading`)){
+      return;
+    }else{
+      this.setState({searchText: text})
+      this.props.doAppSearch(text)
+    }
+    
   }
 
   onClearText = () => {
@@ -124,7 +128,7 @@ class App extends Component<Props> {
       return this._renderNoItems()
     }else{
 
-      var orientationFlex = this.state.orientation==='landscape'? 0.6 : 0.3
+      var orientationFlex = this.state.orientation==='landscape'? 0.6 : 0.35
       return (    
         <View style={{flex: orientationFlex}}>
             <AppList    
@@ -143,7 +147,7 @@ class App extends Component<Props> {
       return this._renderNoItems()
     }else{
   
-    var orientationFlex = this.state.orientation==='landscape'? 0.4 : 0.7
+    var orientationFlex = this.state.orientation==='landscape'? 0.4 : 0.65
       return (
          
         <View style={{flex: orientationFlex}}>
