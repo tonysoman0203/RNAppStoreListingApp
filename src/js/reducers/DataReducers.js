@@ -1,78 +1,62 @@
 import * as Models from '../constants/models'
 import Actions from '../constants/action-types'
 import moment from 'moment'
+import Utils from '../utils/index';
 
 const DataReducers = (state = {} ,action) =>{
     switch(action.type){
         case Actions.GET_APP_RECOMMENDATION_SUCCESS: {
             var entries = []
-            //console.log(`GET_APP_RECOMMENDATION_SUCCESS = ${JSON.stringify(action.data)}`);
             var data = JSON.stringify(action.data.data)
-            //console.log(`data = ${JSON.stringify(data)}`);
             var obj = JSON.parse(data)
-            //console.log(`@@@@@@@@@ = ${JSON.stringify(obj.feed.entry)}`);
-            
-            // for (var i = 0;i<10;i++){
-            //     var entry = obj.feed.entry[i]
-            //     entries.push({entry})
-            // }
             obj.feed.entry.forEach((entry) => {
                 entries.push({entry});
             });
-
+            var dataSource = {entries}
+            
             return({
                 ...state,
-                entries
+                entries,
+                dataSource
             })
         }
 
         case Actions.TOP_FREE_APP_100_SUCCESS: {
             var topFree100Entries = []
             var extraData = []
-            console.log(`TOP_FREE_APP_100_SUCCESS = ${JSON.stringify(action.data.data)}`);
             var data = JSON.stringify(action.data.data)
             var obj = JSON.parse(data)
             for (var iterator = 0;iterator<obj.feed.entry.length;iterator++) { //0-99
-                // console.log(`iterator = ${JSON.stringify(iterator)}`);
                 var entry = obj.feed.entry[iterator]
                 if(iterator < 10 ){
                     topFree100Entries.push({entry})
                 } else{
                     extraData.push({entry})  
-                }
-                      
+                }         
             }
-            // obj.feed.entry.forEach((entry) => {
-            //     topFree100Entries.push({entry});
-            // });
 
-            console.log(`TOP_FREE_APP_100_SUCCESS topFree100Entries : ${topFree100Entries.length} extraData:${extraData.length}`);
+            var dataSource = state.dataSource
+            console.log(`dataSource = ${JSON.stringify(dataSource)}`);
+            dataSource.topFree100Entries = topFree100Entries;
+            dataSource.extraData = extraData
+
             return({
                 ...state,
                 topFree100Entries,
                 extraData,
-                size: topFree100Entries.length
+                size: topFree100Entries.length,
+                dataSource
             })
             
         }
 
         case Actions.APP_RATING_SUCCESS: {
             var ratingInfo = action.ratingInfo
-            console.log(`APP_RATING_SUCCESS = ${ratingInfo.length}`);
-            //TODO: manipulicating the data with key-value pair
-            //TODO: bundleId: {
-            // "averageUserRating": "",
-            // "userRatingCount":""
-            // }
+            //manipulicating the data with key-value pair
             var ratings = []
             ratingInfo.forEach(rating => {
-                console.log(`each rating = ${JSON.stringify(rating)}`);
-               var bundleId = rating.data.results[0].bundleId;
                var averageUserRating = rating.data.results[0].averageUserRating
-               var userRatingCount = rating.data.results[0].userRatingCount
-               console.log(`averageUserRating = ${averageUserRating}`);
-               console.log(`userRatingCount = ${userRatingCount}`);
-               
+               var userRatingCount = rating.data.results[0].userRatingCount 
                var obj = {
                     "averageUserRating": averageUserRating,
                     "userRatingCount": userRatingCount
@@ -88,23 +72,14 @@ const DataReducers = (state = {} ,action) =>{
         }
 
         case Actions.FETCH_MORE: {
-            console.log(`fetchMore action = ${JSON.stringify(action)}`);
             var topFree100Entries = action.orignalData
             var initialPage = 0
             var extraPayload = 10
-            console.log(`fetchMore check data size extraPayload : = ${extraPayload} original: ${topFree100Entries.length}`);
             for (var iterator = initialPage ; iterator < extraPayload;iterator++) {
-               console.log(`fetchMOre iterator = ${iterator}`);
                 var entry = action.extraData[iterator]
-                console.log(`action.extraData iterator ${iterator } = ${JSON.stringify(entry)}`);
                 topFree100Entries.push(entry)
             }
             action.extraData.splice(initialPage,extraPayload) 
-            // console.log(`topFree100Entries.size = ${topFree100Entries.length}`);
-            // obj.feed.entry.forEach((entry) => {
-            //     topFree100Entries.push({entry});
-            // });
-
             return({
                 ...state,
                 topFree100Entries
@@ -113,11 +88,38 @@ const DataReducers = (state = {} ,action) =>{
 
         case Actions.FETCH_DATA_ERROR: {
             console.log(`FETCH_DATA_ERROR !!`);
+            var error = action.error.request
+            console.log(`FETCH_DATA_ERROR error = ${JSON.stringify(error)}`)
+            if(error.status == "403"){
+                error = `No Authorization to access ${error.responseURL}`
+            }else{
+                error = `No Network Connection. Please Try Again later`
+            }
             return({
                 ...state,
-                error: [action.error]
+                error: error
             })
         }
+
+        case Actions.SEARCH_DATA:{
+            var key = action.key;
+            var dataSource = state.dataSource;
+            var entries = state.entries.length == dataSource.entries.length ? state.entries: dataSource.entries
+            var topFree100Entries = state.topFree100Entries.length == dataSource.topFree100Entries.length ? state.topFree100Entries: dataSource.topFree100Entries;
+            var extraData = state.extraData.length == dataSource.extraData.length ? state.extraData: dataSource.extraData;;
+            
+            var appRecomFilterResult = Utils.checkAppContainsKey(entries, key) == null ? entries : Utils.checkAppContainsKey(entries, key);
+            var freeAppFilterResult = Utils.checkAppContainsKey(topFree100Entries, key) == null ? topFree100Entries : Utils.checkAppContainsKey(topFree100Entries, key);
+            var extraDataFilterResult =  Utils.checkAppContainsKey(extraData, key) == null ? extraData : Utils.checkAppContainsKey(extraData, key);
+            
+            return({
+                ...state,
+                entries:appRecomFilterResult,
+                topFree100Entries:freeAppFilterResult,
+                extraData:extraDataFilterResult
+            })
+        }
+
         default: return state
     }
 }

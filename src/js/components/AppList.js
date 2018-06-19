@@ -11,7 +11,7 @@ import {
 import { Spinner } from 'native-base';
 import { Divider } from 'react-native-elements'
 import AppItem from './AppItem';
-import Utils from '../utils/Utils'
+import Utils from '../utils/index'
 
 type Props ={
 

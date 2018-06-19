@@ -13,19 +13,21 @@ import {
   Dimensions,
   ScrollView,
   Alert,
+  SafeAreaView,
   Modal, TouchableHighlight
 } from 'react-native';
 import { Content } from 'native-base'
-import {Button} from 'react-native-elements'
+import {Button, Icon} from 'react-native-elements'
 import Header from '../components/Header'
 import AppList from '../components/AppList'
 import { Spinner } from 'native-base';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import action, { getAppRecommendation, fetchMore,retry } from '../actions'
+import action,{getAppRecommendation, fetchMore,retry,doAppSearch } from '../actions'
 import * as Actions from '../constants/action-types'
 import * as Models from '../constants/models'
 import moment from 'moment'
+import Utils from '../utils/index';
 
 const mapStateToProps = state => {
   return { state };
@@ -36,7 +38,8 @@ const mapDispatchToProps = (dispatch) => {
   return { ...actions, dispatch, 
     callService: ()=>dispatch(getAppRecommendation()),
     fetchMore: (offset, extraData)=>dispatch(fetchMore(offset, extraData)),
-    retry: ()=>{dispatch(retry())}
+    retry: ()=>{dispatch(retry())},
+    doAppSearch: (text)=>{dispatch(doAppSearch(text))}
   };
 }
 
@@ -50,11 +53,12 @@ class App extends Component<Props> {
       topFree100Entries: [],
       extraAppData:[],
       ratings: [],
-      orientation: this.isLandscape() ? 'landscape' : 'portrait',
+      searchText: '',
+      orientation: Utils.isLandscape() ? 'landscape' : 'portrait',
     }
     Dimensions.addEventListener('change', () => {
       this.setState({
-          orientation: this.isLandscape() ? 'landscape' : 'portrait'
+          orientation: Utils.isLandscape() ? 'landscape' : 'portrait'
       });
     });
 
@@ -62,31 +66,51 @@ class App extends Component<Props> {
     this._renderOverLay = this._renderOverLay.bind(this)
   }
 
-  isLandscape = () => {
-    const dim = Dimensions.get('window');
-    return dim.width >= dim.height;
-  };
-
   componentDidMount(){
     this.props.callService()
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        {/* {this._renderOverLay()} */}
-        <Header />
+      <SafeAreaView style={styles.container}>
+        <Header 
+          onSearchBarInputed={this.onSearchBarInputed.bind(this)}
+          onClearText={this.onClearText.bind(this)}
+        />
         {/* <Content> */}
-          <Text style={styles.title}>App Recommendation</Text>
-          {this.renderAppRecommendList()}
-          {this.renderAppFreeList()}
+          {this.renderAppList()}
         {/* </Content> */}
-      </View>
+      </SafeAreaView>
     );
   }
 
+  renderAppList = () =>{
+    if(this.props.state.UIReducers.get(`isLoading`)){
+      return (<Spinner />)
+    }else if(this.props.state.UIReducers.get(`showError`)){
+      return this._renderOverLay()
+    }else{
+      return(
+        <View style={{flex:1}}>
+          <Text style={styles.title}>App Recommendation</Text>  
+          {this.renderAppRecommendList()}
+          {this.renderAppFreeList()}  
+        </View>
+      )
+    }
+  }
+
+  onSearchBarInputed = (text) => {
+    console.log(`onSearchBarInputed text = ${text}`);
+    this.setState({searchText: text})
+    this.props.doAppSearch(text)
+  }
+
+  onClearText = () => {
+    this.setState({searchText: ''})
+  }
+
   componentWillReceiveProps(nextProps){
-    console.log(`componentWillReceiveProps = ${JSON.stringify(nextProps.state.DataReducers.ratings)}`);
     this.setState({
         entries: nextProps.state.DataReducers.entries,
         topFree100Entries: nextProps.state.DataReducers.topFree100Entries,
@@ -96,14 +120,11 @@ class App extends Component<Props> {
   }
 
   renderAppRecommendList(){
-    if(this.props.state.UIReducers.get(`isLoading`)){
-      return (<Spinner />)
-    }else if(this.props.state.UIReducers.get(`showError`)){
-      return this._renderOverLay()
+    if(this.state.entries == null || this.state.entries.length == 0){
+      return this._renderNoItems()
     }else{
-      console.log(`this.state.orientation = ${this.state.orientation}`);
+
       var orientationFlex = this.state.orientation==='landscape'? 0.6 : 0.3
-      console.log(`renderAppRecommend orientationFlex = ${orientationFlex}`);
       return (    
         <View style={{flex: orientationFlex}}>
             <AppList    
@@ -116,18 +137,13 @@ class App extends Component<Props> {
       )
     }
   }
-  
 
   renderAppFreeList(){
-    if(this.props.state.UIReducers.get(`isLoading`)){
-      return (<Spinner />)
-    }else if(this.props.state.UIReducers.get(`showError`)){
-      return this._renderOverLay()
+    if(this.state.topFree100Entries == null || this.state.topFree100Entries.length == 0){
+      return this._renderNoItems()
     }else{
-      // console.log(`this.state.orientation = ${this.state.orientation}`);
-      var orientationFlex = this.state.orientation==='landscape'? 0.4 : 0.7
-      // console.log(`renderAppFreeList orientationFlex = ${orientationFlex}`);
-      // console.log(`renderAppFreeList topFree100Entries.size = ${this.state.topFree100Entries.length}`);
+  
+    var orientationFlex = this.state.orientation==='landscape'? 0.4 : 0.7
       return (
          
         <View style={{flex: orientationFlex}}>
@@ -151,7 +167,7 @@ class App extends Component<Props> {
 
   _renderOverLay = () =>{
     var error = this.props.state.DataReducers.error;
-    console.log(`_renderOverLay`);
+    console.log(`_renderOverLay error = ${error}`);
     return (
           <Modal
           transparent={true}
@@ -159,8 +175,8 @@ class App extends Component<Props> {
           animationType={`slide`}
 
           >
-            <View style={styles.modal}>
-                  <Text style={styles.errorText}>{error[0].request._response}</Text>
+            <SafeAreaView style={styles.modal}>
+                  <Text style={styles.errorText}>{error}</Text>
                   <Button
                     buttonStyle={{
                       backgroundColor: "rgba(255,100,100, 1)",
@@ -177,8 +193,20 @@ class App extends Component<Props> {
                       this.props.retry()
                     }}
                   />
-            </View>
+            </SafeAreaView>
           </Modal>   
+    )
+  }
+
+  _renderNoItems = () =>{
+    var orientationFlex = this.state.orientation==='landscape'? 0.6 : 0.3
+      
+    return (
+      <View style={[styles.noItemsContainer,{flex:orientationFlex}]}>
+        <Icon name={'close'} />
+        <Text>No Application available</Text>
+      </View>
+
     )
   }
 }
@@ -199,10 +227,16 @@ const styles = StyleSheet.create({
   modal: {
     justifyContent: 'center',
     flex:1,
-    backgroundColor:'rgba(151, 153, 158, 0.78)'
+    backgroundColor:'rgba(151, 153, 158, 0.78)',
+    marginTop:44
   },
   errorText: {
     textAlign:'center',
     fontSize:18
+  },
+  noItemsContainer: {
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
   }
 });

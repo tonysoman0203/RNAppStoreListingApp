@@ -17,6 +17,7 @@ export default class Utils {
     }
 
     static checkAppContainsKey(source: Array, key){
+        if(Utils.isEmpty(key)) return null; 
         return source.filter((item, index, array)=>{
                 var map = this.buildMap(item.entry)
                 var pName = map.get(`im:name`).label

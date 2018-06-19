@@ -12,13 +12,21 @@ class Header extends Component<Props> {
 
     render(){
         return(
-            <View style={styles.container}>
+            <View>
                 <SearchBar
+                    ref={ref=>{this.searchBar = ref}}
                     round
                     showLoading
+                    clearButtonMode={'always'}
                     platform="ios"
+                    inputStyle={{backgroundColor: 'white'}}
+                    onClearText={()=>{
+                        this.props.onClearText()
+                    }}
+                    onChangeText={(text)=>{
+                        this.props.onSearchBarInputed(text)
+                    }}
                     lightTheme
-                    cancelButtonTitle="Cancel"
                     placeholder='Search' />
             </View>
         );
@@ -26,11 +34,3 @@ class Header extends Component<Props> {
 }
 
 export default Header;
-
-const styles = StyleSheet.create({
-    container: {
-        
-        alignItems:'stretch',
-        marginTop: 20
-    }
-})

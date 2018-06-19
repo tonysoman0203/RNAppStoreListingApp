@@ -11,5 +11,5 @@ export default class Actions {
   static APP_RATING_SUCCESS = "APP_RATING_SUCCESS"
   static FETCH_MORE = "FETCH_MORE"
   static SHOW_ERROR = "SHOW_ERROR"
-
+  static SEARCH_DATA = "SEARCH_DATA"
 }
