@@ -12,6 +12,7 @@ import { Spinner } from 'native-base';
 import { Divider } from 'react-native-elements'
 import AppItem from './AppItem';
 import Utils from '../utils/index'
+import moment from 'moment'
 
 type Props ={
 
@@ -30,7 +31,7 @@ class AppList extends Component<Props> {
             data={this.props.entries}
             removeClippedSubviews={false}
             renderItem={this._renderItem.bind(this)}
-            keyExtractor={(item, index) => `item_${index}`}
+            keyExtractor={(item, index) => `item_${index}_${moment().format()}`}
             onEndReached={this.props.onLoadMore == null ? null : this.props.onLoadMore}
             onEndReachedThreshold={.7}
           /> 
