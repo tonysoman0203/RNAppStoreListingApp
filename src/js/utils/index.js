@@ -1,4 +1,4 @@
-import {Dimensions } from 'react-native'
+import { Dimensions } from 'react-native'
 export default class Utils {
     static buildMap(obj) {
         let map = new Map();
@@ -16,8 +16,8 @@ export default class Utils {
         return text == '' || text == null || text == undefined
     }
 
-    static checkAppContainsKey(source: Array, key){
-        if(Utils.isEmpty(key)) return null; 
+    static checkAppContainsKey(source, key){
+        if(Utils.isEmpty(key)) return null;
         return source.filter((item, index, array)=>{
                 var map = this.buildMap(item.entry)
                 var pName = map.get(`im:name`).label

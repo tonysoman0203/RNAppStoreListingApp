@@ -1,3 +1,4 @@
+/* @flow */
 import Immutable from 'immutable';
 // export const DataState = Immutable.fromJS({
 //     entries:[],

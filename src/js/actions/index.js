@@ -1,20 +1,19 @@
 /* @flow */
-
-import * as Models from '../constants/models'
 import Actions from '../constants/action-types'
-import APIRequest from '../config/APIRequest'
 import axiosInstance from '../config/Axios'
 import {DataSource} from '../constants/DataSource'
 import Utils from '../utils/index';
+import { AxiosResponse, AxiosError } from 'axios';
+import { Dispatch } from 'redux';
 
-export const retry = () =>{
+export const retry = (): Dispatch =>{
     return dispatch => {
         dispatch(showError())
         dispatch(getAppRecommendation())
     }
 }
 
-export const getAppRecommendation = () => {
+export const getAppRecommendation = (): Dispatch => {
     return dispatch =>{
         dispatch(toggleLoading())
         callAppRecommendationApi()
@@ -56,7 +55,7 @@ export const getAppRecommendation = () => {
     }
 }
 
-export const doAppSearch = (text: String) => {
+export const doAppSearch = (text: String): Dispatch => {
     return dispatch => {
         dispatch(toggleLoading())
         dispatch(searchDataBykey(text))
@@ -72,7 +71,7 @@ function callGetTopFreeAppApi(){
     return axiosInstance.post(DataSource.LIST_TOP_100, null, null)
 }
 
-function genEntriesId(res){
+function genEntriesId(res: AxiosResponse){
     var entries = res.data.feed.entry;
     var allEntries = [];
     entries.forEach(item => {
@@ -83,7 +82,7 @@ function genEntriesId(res){
     return Promise.resolve(allEntries)
 }
 
-function getAppRatingInfoAPI(ids: Array) {
+function getAppRatingInfoAPI(ids: Array<string>) {
     var appInfo = ids.map(async id=> {
         var lookupApi = DataSource.LOOK_UP_APP.replace('[app_id]',id);
         var resp = await axiosInstance.post(lookupApi, null, null)
@@ -94,47 +93,47 @@ function getAppRatingInfoAPI(ids: Array) {
     })
 }
 
-export const toggleLoading = (state) =>{
-    return ({
-        type: Actions.FETCH_DATA_LOADING,
-        state
-    })
-}
-
-export const showError = (state) => {
-    return({
-        type: Actions.SHOW_ERROR,
-        state
-    })
-}
-
-export const getAppRecommendationSuccess = (data) => ({
+export const getAppRecommendationSuccess = (data: any) => ({
     type: Actions.GET_APP_RECOMMENDATION_SUCCESS,
     data: data
 })
 
-export const getTopFreeAppSuccess = (data) => ({
+export const getTopFreeAppSuccess = (data: any) => ({
     type: Actions.TOP_FREE_APP_100_SUCCESS, 
     data: data
 })
 
-export const getAppRatingInfoAPISuccess = (data) => ({
+export const getAppRatingInfoAPISuccess = (data: any) => ({
     type: Actions.APP_RATING_SUCCESS, 
     ratingInfo: data
 })
 
-export const fetchMore = (offset, extraData) => ({
+export const fetchMore = (orignalData: any, extraData:any) => ({
     type: Actions.FETCH_MORE,
     extraData: extraData,
-    orignalData: offset
+    orignalData: orignalData
 })
 
-export const fetchDataError = (err) => ({
+export const fetchDataError = (err: AxiosError) => ({
     type: Actions.FETCH_DATA_ERROR,
     error: err
 })
 
-export const searchDataBykey = (text) => ({
+export const searchDataBykey = (text: String) => ({
     type: Actions.SEARCH_DATA,
     key: text
 })
+
+
+//UI Related Action 
+export const toggleLoading = () =>{
+    return ({
+        type: Actions.FETCH_DATA_LOADING
+    })
+}
+
+export const showError = () => {
+    return({
+        type: Actions.SHOW_ERROR
+    })
+}

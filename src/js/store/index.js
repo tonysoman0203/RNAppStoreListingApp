@@ -1,8 +1,8 @@
 // src/js/store/index.js
+/* @flow */
 import { createStore, applyMiddleware, compose } from 'redux'
 import reducers from '../reducers/index'
 import thunk from 'redux-thunk'
-import Immutable from 'immutable'
 import createSagaMiddleware from 'redux-saga'
 const sagaMiddleware = createSagaMiddleware()
 import { createLogger} from 'redux-logger';

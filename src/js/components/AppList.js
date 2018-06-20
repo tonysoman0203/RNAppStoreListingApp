@@ -15,11 +15,16 @@ import Utils from '../utils/index'
 import moment from 'moment'
 
 type Props ={
-
+  horizontal: boolean,
+  entries: [],
+  onLoadMore?: Function,
+  ratings?:Object[],
+  orientation: string,
+  isRecommendList:boolean
 }
 
 class AppList extends Component<Props> {
-  constructor(props){
+  constructor(props:Props){
     super(props)
   }
 
@@ -31,8 +36,8 @@ class AppList extends Component<Props> {
             data={this.props.entries}
             removeClippedSubviews={false}
             renderItem={this._renderItem.bind(this)}
-            keyExtractor={(item, index) => `item_${index}_${moment().format()}`}
-            onEndReached={this.props.onLoadMore == null ? null : this.props.onLoadMore}
+            keyExtractor={(item, index) => `item_${index}`}
+            onEndReached={()=>{this.props.onLoadMore == null ? null : this.props.onLoadMore()}}
             onEndReachedThreshold={.7}
           /> 
         </View>  
@@ -40,19 +45,20 @@ class AppList extends Component<Props> {
     
   }
 
-  _renderItem = ({item, index}) => {
+  _renderItem = ({item, index}: Object) => {
     console.log(`renderItem item = ${JSON.stringify(item)}`);
+    var i = parseInt(index);
     if(item){
       const map = Utils.buildMap(item.entry) 
       if(this.props.ratings){
-        console.log(`_renderItem = ${JSON.stringify(this.props.ratings[index])}`);
-        map.set("averageUserRating",this.props.ratings[index].averageUserRating)
-        map.set("userRatingCount",this.props.ratings[index].userRatingCount)
+        // console.log(`_renderItem = ${JSON.stringify(this.props.ratings[i])}`);
+        map.set("averageUserRating",this.props.ratings[i].averageUserRating)
+        map.set("userRatingCount",this.props.ratings[i].userRatingCount)
       }
       return (
         <AppItem
           orientation={this.props.orientation}
-          indexText={index+1}
+          indexText={`${parseInt(i)+1}`}
           isRecommendedItem={this.props.isRecommendList}
           entry={map}
         />

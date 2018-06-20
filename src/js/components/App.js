@@ -23,7 +23,7 @@ import AppList from '../components/AppList'
 import { Spinner } from 'native-base';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import action,{getAppRecommendation, fetchMore,retry,doAppSearch } from '../actions'
+import {getAppRecommendation, fetchMore,retry,doAppSearch } from '../actions'
 import * as Actions from '../constants/action-types'
 import * as Models from '../constants/models'
 import moment from 'moment'
@@ -34,8 +34,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  let actions = bindActionCreators({ action });
-  return { ...actions, dispatch, 
+  return { 
+    dispatch,
     callService: ()=>dispatch(getAppRecommendation()),
     fetchMore: (offset, extraData)=>dispatch(fetchMore(offset, extraData)),
     retry: ()=>{dispatch(retry())},
@@ -43,9 +43,18 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-type Props = {};
+type Props = mapDispatchToProps
 
-class App extends Component<Props> {
+type State = {
+  entries: [],
+  topFree100Entries:[],
+  extraAppData:[],
+  ratings:[],
+  searchText:string,
+  orientation:string
+}
+
+class App extends Component<Props, State > {
   constructor(){
     super()
     this.state = {
@@ -73,7 +82,7 @@ class App extends Component<Props> {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <Header 
+        <Header
           onSearchBarInputed={this.onSearchBarInputed.bind(this)}
           onClearText={this.onClearText.bind(this)}
         />
@@ -92,22 +101,22 @@ class App extends Component<Props> {
     }else{
       return(
         <View style={{flex:1}}>
-          <Text style={styles.title}>App Recommendation</Text>  
+          <Text style={styles.title}>App Recommendation</Text>
           {this.renderAppRecommendList()}
-          {this.renderAppFreeList()}  
+          {this.renderAppFreeList()}
         </View>
       )
     }
   }
 
-  onSearchBarInputed = (text) => {
+  onSearchBarInputed = (text: string) => {
     if(this.props.state.UIReducers.get(`isLoading`)){
       return;
     }else{
       this.setState({searchText: text})
       this.props.doAppSearch(text)
     }
-    
+
   }
 
   onClearText = () => {
@@ -129,11 +138,11 @@ class App extends Component<Props> {
     }else{
 
       var orientationFlex = this.state.orientation==='landscape'? 0.6 : 0.35
-      return (    
+      return (
         <View style={{flex: orientationFlex}}>
-            <AppList    
+            <AppList
               orientation={this.state.orientation}
-              isRecommendList={true}  
+              isRecommendList={true}
               horizontal={true}
               entries={this.state.entries}
             />
@@ -146,20 +155,22 @@ class App extends Component<Props> {
     if(this.state.topFree100Entries == null || this.state.topFree100Entries.length == 0){
       return this._renderNoItems()
     }else{
-  
+
     var orientationFlex = this.state.orientation==='landscape'? 0.4 : 0.65
       return (
-         
+
         <View style={{flex: orientationFlex}}>
           <AppList
-            onLoadMore={()=>{this._onLoadMore()}}
+            onLoadMore={()=>{
+              this._onLoadMore()}
+            }
             orientation={this.state.orientation}
             isRecommendList={false}
-            horizontal={false} 
+            horizontal={false}
             entries={this.state.topFree100Entries}
             ratings={this.state.ratings}
           />
-        </View>  
+        </View>
       )
     }
   }
@@ -198,13 +209,13 @@ class App extends Component<Props> {
                     }}
                   />
             </SafeAreaView>
-          </Modal>   
+          </Modal>
     )
   }
 
   _renderNoItems = () =>{
     var orientationFlex = this.state.orientation==='landscape'? 0.6 : 0.3
-      
+
     return (
       <View style={[styles.noItemsContainer,{flex:orientationFlex}]}>
         <Icon name={'close'} />

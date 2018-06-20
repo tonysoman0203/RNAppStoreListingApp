@@ -11,6 +11,7 @@
     "aos-release": "react-native run-android --variant=release"
   },
   "dependencies": {
+    "@types/react-native": "^0.55.22",
     "axios": "^0.18.0",
     "axios-cache-adapter": "^2.0.0",
     "immutable": "^3.8.2",
@@ -23,12 +24,10 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-actions": "^2.3.2",
-    "redux-axios-middleware": "^4.0.0",
     "redux-immutable": "^4.0.0",
     "redux-persist": "^5.10.0",
     "redux-saga": "^0.16.0",
-    "redux-thunk": "^2.2.0",
-    "uuid": "^3.2.1"
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -47,7 +46,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-react-native": "^3.2.1",
-    "flow-bin": "^0.72.0",
+    "flow-bin": "^0.67.1",
     "flow-remove-types": "^1.2.3",
     "jest": "23.1.0",
     "react-native-typescript-transformer": "^1.2.5",

@@ -1,12 +1,19 @@
+/* @flow */
+
 import React, { Component } from 'react';
 import { SearchBar } from 'react-native-elements'
 import {
     StyleSheet,
     View
 } from 'react-native';
-  
+
+type Props = {
+    onSearchBarInputed:Function,
+    onClearText:Function
+}
+
 class Header extends Component<Props> {
-    constructor(props){
+    constructor(props: Props){
         super(props)
     }
 
@@ -14,7 +21,6 @@ class Header extends Component<Props> {
         return(
             <View>
                 <SearchBar
-                    ref={ref=>{this.searchBar = ref}}
                     round
                     showLoading
                     clearButtonMode={'always'}
@@ -23,7 +29,7 @@ class Header extends Component<Props> {
                     onClearText={()=>{
                         this.props.onClearText()
                     }}
-                    onChangeText={(text)=>{
+                    onChangeText={(text: String)=>{
                         this.props.onSearchBarInputed(text)
                     }}
                     lightTheme

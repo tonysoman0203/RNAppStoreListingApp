@@ -7,16 +7,29 @@ import {
   View,
   Text,
   Image,
-  FlatList
 } from 'react-native';
-import { Spinner } from 'native-base';
 import { Rating } from 'react-native-elements';
 
-type Props = {}
+type Entry = {
+    averageUserRating: string,
+    userRatingCount: string,
+    attributes:{
+        label:string,
+        height: string
+    },
+    label: string
+}
+
+type Props = {
+    isRecommendedItem: boolean,
+    orientation: string,
+    entry: Map<string, Entry>,
+    indexText: string, 
+}
 
 class AppItem extends Component<Props>{
     
-    constructor(props){
+    constructor(props: Props){
         super(props)
     }
     
@@ -61,7 +74,7 @@ class AppItem extends Component<Props>{
     renderNormalAppItem = () => {
         var isLandscape = this.props.orientation=='landscape' 
         var imageHeight = 0
-        console.log(`renderNormalAPpItem imageHeight = ${this.props.entry.get(`im:image`)}`);
+        //console.log(`renderNormalAPpItem imageHeight = ${this.props.entry.get(`im:image`)}`);
         if(isLandscape)
             imageHeight = parseInt(this.props.entry.get(`im:image`)[1].attributes.height)
         else
@@ -69,8 +82,8 @@ class AppItem extends Component<Props>{
         
         var imageWidth = imageHeight;
 
-        console.log(`renderNormalitem averageUserRating = ${this.props.entry.get(`averageUserRating`)}`)
-        console.log(`renderNormalitem userRatingCount = ${this.props.entry.get(`userRatingCount`)}`)
+        //console.log(`renderNormalitem averageUserRating = ${this.props.entry.get(`averageUserRating`)}`)
+        // console.log(`renderNormalitem userRatingCount = ${this.props.entry.get(`userRatingCount`)}`)
         
         return (
             <View style={[styles.container,{flexDirection: 'row', alignItems:'center'}]}>

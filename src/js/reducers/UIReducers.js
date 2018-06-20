@@ -1,7 +1,9 @@
+/* @flow */
 import { UIState } from '../constants/models'
 import Actions from '../constants/action-types'
+import { Action } from 'redux';
 
-const UIReducers = (state = UIState, action) =>{
+const UIReducers = (state: UIState = UIState, action: Action): UIState =>{
     switch(action.type){
         case Actions.FETCH_DATA_LOADING:{
             return state.set('isLoading',!state.get(`isLoading`))

@@ -35,7 +35,7 @@ const DataReducers = (state = {} ,action) =>{
             }
 
             var dataSource = state.dataSource
-            console.log(`dataSource = ${JSON.stringify(dataSource)}`);
+            // console.log(`dataSource = ${JSON.stringify(dataSource)}`);
             dataSource.topFree100Entries = topFree100Entries;
             dataSource.extraData = extraData
 
@@ -62,7 +62,7 @@ const DataReducers = (state = {} ,action) =>{
                 }
                ratings.push(obj)
             })
-            console.log(`ratings = ${JSON.stringify(ratings)}`);
+            // console.log(`ratings = ${JSON.stringify(ratings)}`);
             return({
                 ...state,
                 ratings,
