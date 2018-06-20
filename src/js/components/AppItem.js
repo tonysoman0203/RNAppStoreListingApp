@@ -88,20 +88,32 @@ class AppItem extends Component<Props>{
                 <View style={styles.appDetailView}>
                     <Text style={styles.label}>{this.props.entry.get(`im:name`).label}</Text>     
                     <Text style={styles.label}>{this.props.entry.get(`category`).attributes.label}</Text>     
-                    <View style={styles.appDetailRatingView}>
-                        <Rating
-                            type="star"
-                            startingValue={this.props.entry.get(`averageUserRating`)}
-                            readonly
-                            imageSize={15}
-                            ratingColor={'#f47100'}
-                            style={{ paddingVertical: 10 }}
-                            />
-                        <Text style={{ paddingVertical: 10 }}>({this.props.entry.get(`userRatingCount`)})</Text>    
-                    </View>    
+                    
+                        {this.renderRating()}  
+                    
                 </View>    
             </View>    
         )
+    }
+
+    renderRating = () => {
+        if(this.props.entry.get(`averageUserRating`) && this.props.entry.get(`userRatingCount`)){
+            return (
+                <View style={styles.appDetailRatingView}>
+                    <Rating
+                        type="star"
+                        startingValue={this.props.entry.get(`averageUserRating`)}
+                        readonly
+                        imageSize={15}
+                        ratingColor={'#f47100'}
+                        style={{ paddingVertical: 10 }}
+                        />
+                    <Text style={{ paddingVertical: 10 }}>({this.props.entry.get(`userRatingCount`)})</Text>
+                </View>      
+            )
+        }else{
+            return null
+        }
     }
 }
 
