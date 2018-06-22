@@ -47,19 +47,20 @@ class AppList extends Component<Props> {
   _renderItem = ({item, index}: Object) => {
     console.log(`renderItem item = ${JSON.stringify(item)}`);
     var i = parseInt(index);
+    
     if(item){
-      const map = Utils.buildMap(item.entry) 
+      // const map = Utils.buildMap(item.entry) 
       if(this.props.ratings){
         // console.log(`_renderItem = ${JSON.stringify(this.props.ratings[i])}`);
-        map.set("averageUserRating",this.props.ratings[i].averageUserRating)
-        map.set("userRatingCount",this.props.ratings[i].userRatingCount)
+        item.entry.averageUserRating = this.props.ratings[i].averageUserRating
+        item.entry.userRatingCount = this.props.ratings[i].userRatingCount
       }
       return (
         <AppItem
           orientation={this.props.orientation}
           indexText={`${parseInt(i)+1}`}
           isRecommendedItem={this.props.isRecommendList}
-          entry={map}
+          entry={item.entry}
         />
       )
     }else{

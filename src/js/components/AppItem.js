@@ -42,12 +42,13 @@ class AppItem extends Component<Props>{
     }
 
     renderAppRecommendItem = () => {
+        console.log(`renderAppRecommendItem ${JSON.stringify(this.props.entry.image[2])}`);
         var isLandscape = this.props.orientation=='landscape' 
         var imageHeight = 0
         if(isLandscape)
-            imageHeight = parseInt(this.props.entry.get(`im:image`)[1].attributes.height)
+            imageHeight = parseInt(this.props.entry.image[1].attributes.height)
         else
-            imageHeight = parseInt(this.props.entry.get(`im:image`)[2].attributes.height)
+            imageHeight = parseInt(this.props.entry.image[2].attributes.height)
         
         var imageWidth = imageHeight;
 
@@ -61,24 +62,26 @@ class AppItem extends Component<Props>{
                         }
                     }
                     source={{
-                        uri: this.props.entry.get(`im:image`)[0].label,
+                        uri: this.props.entry.image[0].label,
                         cache: 'default'
                     }}
                 />
-               <Text style={styles.label}>{this.props.entry.get(`im:name`).label}</Text>     
-               <Text style={styles.label}>{this.props.entry.get(`category`).attributes.label}</Text>     
+               <Text style={styles.label}>{this.props.entry.name.label}</Text>     
+               <Text style={styles.label}>{this.props.entry.category.attributes.label}</Text>     
             </View>    
         );
     }
 
     renderNormalAppItem = () => {
+        console.log(`renderNormalAppItem ${JSON.stringify(this.props.entry.image)}`);
+        
         var isLandscape = this.props.orientation=='landscape' 
         var imageHeight = 0
         //console.log(`renderNormalAPpItem imageHeight = ${this.props.entry.get(`im:image`)}`);
         if(isLandscape)
-            imageHeight = parseInt(this.props.entry.get(`im:image`)[1].attributes.height)
+            imageHeight = parseInt(this.props.entry.image[1].attributes.height)
         else
-            imageHeight = parseInt(this.props.entry.get(`im:image`)[2].attributes.height)
+            imageHeight = parseInt(this.props.entry.image[2].attributes.height)
         
         var imageWidth = imageHeight;
 
@@ -94,13 +97,13 @@ class AppItem extends Component<Props>{
                     borderRadius={parseInt(this.props.indexText) % 2 == 0 ? 50 : 20}
                     style={{ width:imageWidth, height:imageHeight}}
                     source={{
-                        uri: this.props.entry.get(`im:image`)[0].label,
+                        uri: this.props.entry.image[0].label,
                         cache: 'default'
                     }}
                 />
                 <View style={styles.appDetailView}>
-                    <Text style={styles.label}>{this.props.entry.get(`im:name`).label}</Text>     
-                    <Text style={styles.label}>{this.props.entry.get(`category`).attributes.label}</Text>     
+                    <Text style={styles.label}>{this.props.entry.name.label}</Text>     
+                    <Text style={styles.label}>{this.props.entry.category.attributes.label}</Text>     
                     
                         {this.renderRating()}  
                     
@@ -110,18 +113,18 @@ class AppItem extends Component<Props>{
     }
 
     renderRating = () => {
-        if(this.props.entry.get(`averageUserRating`) && this.props.entry.get(`userRatingCount`)){
+        if(this.props.entry.averageUserRating && this.props.entry.userRatingCount){
             return (
                 <View style={styles.appDetailRatingView}>
                     <Rating
                         type="star"
-                        startingValue={this.props.entry.get(`averageUserRating`)}
+                        startingValue={this.props.entry.averageUserRating}
                         readonly
                         imageSize={15}
                         ratingColor={'#f47100'}
                         style={{ paddingVertical: 10 }}
                         />
-                    <Text style={{ paddingVertical: 10 }}>({this.props.entry.get(`userRatingCount`)})</Text>
+                    <Text style={{ paddingVertical: 10 }}>({this.props.entry.userRatingCount})</Text>
                 </View>      
             )
         }else{

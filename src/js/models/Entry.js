@@ -30,6 +30,7 @@ export default class Entry extends BaseModel {
         this.rights = new Rights()
         this.title = new Title()
         this.summary = new Summary()
-        
+        this.averageUserRating = ''
+        this.userRatingCount = ''
     }
 }

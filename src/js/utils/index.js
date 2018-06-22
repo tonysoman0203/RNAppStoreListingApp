@@ -19,11 +19,11 @@ export default class Utils {
     static checkAppContainsKey(source, key){
         if(Utils.isEmpty(key)) return null;
         return source.filter((item, index, array)=>{
-                var map = this.buildMap(item.entry)
-                var pName = map.get(`im:name`).label
-                var pSummary = map.get(`summary`).label
-                var pcategory = map.get(`category`).attributes.term
-                var pAuthor = map.get(`im:artist`).label
+                //var map = this.buildMap(item.entry)
+                var pName = item.entry.name.label
+                var pSummary = item.entry.summary.label
+                var pcategory = item.entry.category.attributes.term
+                var pAuthor = item.entry.artist.label
                 // console.log(`productMap find pName = ${pName} pcategory:${pcategory} pAuthor: ${pAuthor} pSummary=${pSummary}`);
                 return pName.includes(key) || pSummary.includes(key) || pcategory.includes(key) || pAuthor.includes(key)
         })

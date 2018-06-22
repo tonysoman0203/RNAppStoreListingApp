@@ -1,5 +1,5 @@
 import Actions from '../constants/Actions'
-import moment from 'moment'
+import Entry from '../models/Entry'
 import Utils from '../utils/index'
 
 const DataReducers = (state = {} ,action) =>{
@@ -8,7 +8,28 @@ const DataReducers = (state = {} ,action) =>{
             var entries = []
             var data = JSON.stringify(action.data.data)
             var obj = JSON.parse(data)
-            obj.feed.entry.forEach((entry) => {
+            obj.feed.entry.forEach((e) => {
+                let map = Utils.buildMap(e)
+                let entry = new Entry()
+                entry.artist = map.get('im:artist')
+                entry.artist.attributes = map.get('im:artist').attributes
+                entry.category = map.get('category')
+                entry.category.attributes = map.get('category').attributes
+                entry.summary = map.get('summary')
+                entry.price = map.get('im:price')
+                entry.price.attributes = map.get('im:price').attributes
+                entry.contentType = map.get('im:contentType')
+                entry.contentType.attributes = map.get('im:contentType').attributes
+                entry.rights = map.get('rights')
+                entry.title = map.get('title')
+                entry.id = map.get('id')
+                entry.id.attributes = map.get('id').attributes
+                entry.releaseDate = map.get('im:releaseDate')
+                entry.releaseDate.attributes = map.get('im:releaseDate').attributes
+                entry.name = map.get('im:name');
+                entry.image = map.get('im:image')
+                entry.link = map.get('link')
+                entry.link.attributes = map.get(`link`).attributes
                 entries.push({entry});
             });
             var dataSource = {entries}
@@ -26,7 +47,27 @@ const DataReducers = (state = {} ,action) =>{
             var data = JSON.stringify(action.data.data)
             var obj = JSON.parse(data)
             for (var iterator = 0;iterator<obj.feed.entry.length;iterator++) { //0-99
-                var entry = obj.feed.entry[iterator]
+                let map = Utils.buildMap(obj.feed.entry[iterator])
+                let entry = new Entry()
+                entry.artist = map.get('im:artist')
+                entry.artist.attributes = map.get('im:artist').attributes
+                entry.category = map.get('category')
+                entry.category.attributes = map.get('category').attributes
+                entry.summary = map.get('summary')
+                entry.price = map.get('im:price')
+                entry.price.attributes = map.get('im:price').attributes
+                entry.contentType = map.get('im:contentType')
+                entry.contentType.attributes = map.get('im:contentType').attributes
+                entry.rights = map.get('rights')
+                entry.title = map.get('title')
+                entry.id = map.get('id')
+                entry.id.attributes = map.get('id').attributes
+                entry.releaseDate = map.get('im:releaseDate')
+                entry.releaseDate.attributes = map.get('im:releaseDate').attributes
+                entry.name = map.get('im:name');
+                entry.image = map.get('im:image')
+                entry.link = map.get('link')
+                entry.link.attributes = map.get(`link`).attributes
                 if(iterator < 10 ){
                     topFree100Entries.push({entry})
                 } else{
