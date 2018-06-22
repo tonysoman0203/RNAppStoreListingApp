@@ -1,5 +1,5 @@
 import BaseModel from './BaseModel'
-import Attributes from './Atttributes'
+import Attributes from './Attributes'
 export default class Link extends BaseModel {
     constructor(){
         super()

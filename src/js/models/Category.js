@@ -1,5 +1,5 @@
 import BaseModel from './BaseModel'
-import Attributes from './Atttributes'
+import Attributes from './Attributes'
 export default class Category extends BaseModel {
     constructor(){
         super()
