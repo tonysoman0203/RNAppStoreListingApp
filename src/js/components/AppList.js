@@ -12,7 +12,6 @@ import { Spinner } from 'native-base';
 import { Divider } from 'react-native-elements'
 import AppItem from './AppItem';
 import Utils from '../utils/index'
-import moment from 'moment'
 
 type Props ={
   horizontal: boolean,

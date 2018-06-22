@@ -22,10 +22,7 @@ import Header from '../components/Header'
 import AppList from '../components/AppList'
 import { Spinner } from 'native-base';
 import { connect } from "react-redux";
-import { bindActionCreators } from 'redux'
 import {getAppRecommendation, fetchMore,retry,doAppSearch } from '../actions'
-import * as Actions from '../constants/action-types'
-import * as Models from '../constants/models'
 import moment from 'moment'
 import Utils from '../utils/index';
 
