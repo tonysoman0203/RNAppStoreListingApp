@@ -1,4 +1,4 @@
-import Actions from '../constants/action-types'
+import Actions from '../constants/Actions'
 import moment from 'moment'
 import Utils from '../utils/index'
 

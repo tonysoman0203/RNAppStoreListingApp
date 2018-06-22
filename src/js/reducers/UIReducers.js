@@ -1,6 +1,6 @@
 /* @flow */
 import { UIState } from '../constants/models'
-import Actions from '../constants/action-types'
+import Actions from '../constants/Actions'
 import { Action } from 'redux';
 
 const UIReducers = (state: UIState = UIState, action: Action): UIState =>{

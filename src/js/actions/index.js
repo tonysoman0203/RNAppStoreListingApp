@@ -1,5 +1,5 @@
 /* @flow */
-import Actions from '../constants/action-types'
+import Actions from '../constants/Actions'
 import axiosInstance from '../config/Axios'
 import {DataSource} from '../constants/DataSource'
 import Utils from '../utils/index';
