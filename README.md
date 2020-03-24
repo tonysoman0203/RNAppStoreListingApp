@@ -1,32 +1,38 @@
 # RNAppStoreListingApp
-### This application is to demostrate the app store listing and app recommendation.
+## This application is to demostrate the app store listing and app recommendation.
 
-#### Getting Started
+## Walkthrough
+![Walkthrough](walkthrough.gif) 
+## Getting Started
 If opening in Linux/ Unix Environment i.e  Macintosh-OS, 
 1. open in terminal
 2. brew install node
 3. brew install watchman
 4. npm install -g react-native-cli
 5. cd RNAppStoreListingApp
-6. yarn install / npm install --save
-7. To run project in iOS, open XCode in "ios/RNAppStoreListingApp.xcodeproj" and run the project until indexing is finished.
-8. To run project in android, open Android Studio and open folder with "android" and type "yarn run aos" in terminal after running the emulator.
-9. For testing, there exists the apk archived in "testing_apk" for further usage.
+6. yarn install
+7. npx react-native link
+8. npx react-native run-ios
+9. npx react-native run-android
 
-### This application is written by React-Native with some plugins
-#### Networking 
+
+## This application is written by React-Native with some plugins
+### Networking 
 - Axios (https://github.com/axios/axios)
-#### State Store
+### State Store
 - Redux (https://github.com/reduxjs/redux)
-#### Data Peristent
+### Data Peristent
 - Immutable.js (https://github.com/facebook/immutable-js/)
-#### UI Components
+### UI Components
 - react-native-components (https://github.com/react-native-training/react-native-elements)
 - nativebase (https://github.com/GeekyAnts/NativeBase)
-#### Date Conversion
+### Date Conversion
 - Moment.js (https://momentjs.com/)
-#### Type Validation and Checking
+### Type Validation and Checking
 - Flow (https://flow.org/en/docs/install/)
+### Linting
+- eslint
+- commitlint
 
 ### Features:
 - Lazy load every 10 records in App-listing
