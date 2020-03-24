@@ -1,13 +1,6 @@
 /* @flow */
-import Immutable from 'immutable';
-// export const DataState = Immutable.fromJS({
-//     entries:[],
-//     topFree100Entries:[],
-//     ratings:[],
-//     extraData:[],
-//     dataSource:[]
-// })
+import Immutable from 'immutable'
 export const UIState = Immutable.fromJS({
-    isLoading: false,
-    showError: false
+	isLoading: false,
+	showError: false,
 })
