@@ -1,15 +1,16 @@
 /* @flow */
 
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { View } from 'react-native'
 import { SearchBar } from 'react-native-elements'
 
 type Props = {
     onSearchBarInputed: Function,
-    onClearText: Function,
+		onClearText: Function,
+		showLoading: Boolean;
 }
 
-class Header extends Component<Props> {
+class Header extends PureComponent<Props> {
 	constructor(props: Props) {
 		super(props)
 	}
@@ -19,7 +20,6 @@ class Header extends Component<Props> {
 			<View>
 				<SearchBar
 					round
-					showLoading
 					clearButtonMode={'always'}
 					platform="ios"
 					inputStyle={{ backgroundColor: 'white' }}

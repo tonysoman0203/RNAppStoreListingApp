@@ -73,6 +73,7 @@ class App extends Component<Props, State> {
 		return (
 			<SafeAreaView style={styles.container}>
 				<Header
+					showLoading={this.props.state.UIReducers.get('isLoading')}
 					onSearchBarInputed={this.onSearchBarInputed.bind(this)}
 					onClearText={this.onClearText.bind(this)}
 				/>

@@ -51,7 +51,7 @@ export const getAppRecommendation = (): Dispatch => {
 						dispatch(showError())
 					})
 			})
-			.catch((err) => {
+			.catch((err) => {	
 				dispatch(toggleLoading())
 				dispatch(fetchDataError(err))
 				dispatch(showError())

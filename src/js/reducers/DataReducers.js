@@ -3,17 +3,19 @@ import Entry from '../models/Entry'
 import Utils from '../utils/index'
 
 const DataReducers = (state = {}, action) => {
-	var data = null
-	var topFree100Entries = []
-	var extraData = []
-	var entries = []
-	var obj = null
+	let data = null
+	let topFree100Entries = []
+	let extraData = []
+	let entries = []
+	let obj = null
 	switch (action.type) {
 	case Actions.GET_APP_RECOMMENDATION_SUCCESS: {
-		data = JSON.stringify(action.data.data)
-		obj.feed.entry.forEach((e) => {
+		data = action.data.data
+		const entry = data.feed.entry
+		entry.forEach((e) => {
 			let map = Utils.buildMap(e)
 			let entry = new Entry()
+			
 			entry.artist = map.get('im:artist')
 			entry.artist.attributes = map.get('im:artist').attributes
 			entry.category = map.get('category')
@@ -39,7 +41,7 @@ const DataReducers = (state = {}, action) => {
 			entry.link.attributes = map.get('link').attributes
 			entries.push({ entry })
 		})
-		var dataSource = { entries }
+		const dataSource = { entries }
 
 		return {
 			...state,
@@ -52,7 +54,7 @@ const DataReducers = (state = {}, action) => {
 		data = JSON.stringify(action.data.data)
 		obj = JSON.parse(data)
 		for (
-			var iterator = 0;
+			let iterator = 0;
 			iterator < obj.feed.entry.length;
 			iterator++
 		) {
@@ -89,7 +91,7 @@ const DataReducers = (state = {}, action) => {
 			}
 		}
 
-		dataSource = state.dataSource
+		let dataSource = state.dataSource
 		// console.log(`dataSource = ${JSON.stringify(dataSource)}`);
 		dataSource.topFree100Entries = topFree100Entries
 		dataSource.extraData = extraData
@@ -104,13 +106,13 @@ const DataReducers = (state = {}, action) => {
 	}
 
 	case Actions.APP_RATING_SUCCESS: {
-		var ratingInfo = action.ratingInfo
+		const ratingInfo = action.ratingInfo
 		//manipulicating the data with key-value pair
-		var ratings = []
+		const ratings = []
 		ratingInfo.forEach((rating) => {
-			var averageUserRating = rating.data.results[0].averageUserRating
-			var userRatingCount = rating.data.results[0].userRatingCount
-			var obj = {
+			const averageUserRating = rating.data.results[0].averageUserRating
+			const userRatingCount = rating.data.results[0].userRatingCount
+			const obj = {
 				averageUserRating: averageUserRating,
 				userRatingCount: userRatingCount,
 			}
@@ -126,14 +128,14 @@ const DataReducers = (state = {}, action) => {
 
 	case Actions.FETCH_MORE: {
 		topFree100Entries = action.orignalData
-		var initialPage = 0
-		var extraPayload = 10
+		const initialPage = 0
+		const extraPayload = 10
 		for (
 			let iterator = initialPage;
 			iterator < extraPayload;
 			iterator++
 		) {
-			var entry = action.extraData[iterator]
+			const entry = action.extraData[iterator]
 			topFree100Entries.push(entry)
 		}
 		action.extraData.splice(initialPage, extraPayload)
@@ -144,39 +146,40 @@ const DataReducers = (state = {}, action) => {
 	}
 
 	case Actions.FETCH_DATA_ERROR: {
-		var error = action.error.request
-		if (error.status == '403') {
-			error = `No Authorization to access ${error.responseURL}`
+		const error = action.error.request
+		let message
+		if (error && error.status == '403') {
+			message = `No Authorization to access ${error.responseURL}`
 		} else {
-			error = 'No Network Connection. Please Try Again later'
+			message = 'No Network Connection. Please Try Again later'
 		}
 		return {
 			...state,
-			error: error,
+			error: message,
 		}
 	}
 
 	case Actions.SEARCH_DATA: {
-		var key = action.key
-		dataSource = state.dataSource
-		entries = state.entries.length == dataSource.entries.length
+		const key = action.key
+		const dataSource = state.dataSource
+		const entries = state.entries.length == dataSource.entries.length
 			? state.entries
 			: dataSource.entries
-		topFree100Entries = state.topFree100Entries.length ==
+		const topFree100Entries = state.topFree100Entries.length ==
 			dataSource.topFree100Entries.length
 			? state.topFree100Entries
 			: dataSource.topFree100Entries
-		extraData = state.extraData.length == dataSource.extraData.length
+		const extraData = state.extraData.length == dataSource.extraData.length
 			? state.extraData
 			: dataSource.extraData
 
-		var appRecomFilterResult = Utils.checkAppContainsKey(entries, key) == null
+		const appRecomFilterResult = Utils.checkAppContainsKey(entries, key) == null
 			? entries
 			: Utils.checkAppContainsKey(entries, key)
-		var freeAppFilterResult = Utils.checkAppContainsKey(topFree100Entries, key) == null
+		const freeAppFilterResult = Utils.checkAppContainsKey(topFree100Entries, key) == null
 			? topFree100Entries
 			: Utils.checkAppContainsKey(topFree100Entries, key)
-		var extraDataFilterResult = Utils.checkAppContainsKey(extraData, key) == null
+		const extraDataFilterResult = Utils.checkAppContainsKey(extraData, key) == null
 			? extraData
 			: Utils.checkAppContainsKey(extraData, key)
                 
