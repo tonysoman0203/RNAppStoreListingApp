@@ -31,6 +31,8 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",
@@ -52,6 +54,7 @@
     "flow-remove-types": "^2.121.0",
     "husky": "^4.2.3",
     "jest": "25.1.0",
+    "react-native-typescript-transformer": "^1.2.13",
     "react-test-renderer": "16.13.1",
     "redux-logger": "^3.0.6"
   },
@@ -60,6 +63,7 @@
   },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "npm run lint"
     }
   }
