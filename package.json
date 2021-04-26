@@ -13,7 +13,7 @@
     "lint": "eslint --fix src/**/*"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.0",
     "axios-cache-adapter": "^2.5.0",
     "immutable": "^3.8.2",
     "moment": "^2.24.0",
