@@ -1,4 +1,7 @@
 {
+  "ignorePaths": [
+    "**/yarn.lock"
+  ],
   "packageRules": [
     {
       "updateTypes": [
