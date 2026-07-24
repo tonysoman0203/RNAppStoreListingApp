@@ -1,4 +1,6 @@
 {
+  "rebaseWhen": "conflicted",
+  "automergeType": "branch",
   "ignorePaths": [
     "**/yarn.lock"
   ],
