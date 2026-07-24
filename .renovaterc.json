@@ -4,6 +4,10 @@
   "ignorePaths": [
     "**/yarn.lock"
   ],
+  "pruneStaleBranches": true,
+  "dependencyDashboardAutoclose": true,
+  "pruneBranchAfterAutomerge": true,
+  "abandonmentThreshold": "30 days",
   "packageRules": [
     {
       "updateTypes": [
